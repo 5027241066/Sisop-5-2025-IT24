@@ -2,10 +2,11 @@
 
 ## Kelompok
 
-Nama | NRP
---- | ---
-Amoes Noland | 5027231028
-Rafi' Afnaan Fathurrahman | 5027231040
+| No | Nama                   | NRP         |
+|----|------------------------|-------------|
+| 1  | Aditya Reza Daffansyah | 5027241034  |
+| 2  | Ahmad Yafi Ar Rizq     | 5027241066  |
+| 3  | Zahra Khaalishah       | 5027241070  |
 
 ## Daftar Isi
 
