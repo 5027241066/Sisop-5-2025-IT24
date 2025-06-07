@@ -1,8 +1,6 @@
 # You may now use double quotes around pathnames, in case
 # your pathname includes spaces.
 
-display_library: sdl
-
 #=======================================================================
 # ROMIMAGE:
 # The ROM BIOS controls what the PC does when it first powers on.

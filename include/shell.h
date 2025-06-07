@@ -1,10 +1,12 @@
 #ifndef __SHELL_H__
 #define __SHELL_H__
 
-#include "std_type.h" // Untuk bool
+#include "std_type.h"
 
 void shell();
-// parseCommand tetap sama, tapi implementasinya di C akan kita pastikan.
-void parseCommand(char *buf, char *command, char arguments[2][64]);
+void parseCommand(char *buf, char *cmd, char arg[2][64]);
+void handleCommand(char *cmd, char arg[2][64], char *buf);
+void updatePrompt();
+void grandCompany(char* company);
 
 #endif // __SHELL_H__
