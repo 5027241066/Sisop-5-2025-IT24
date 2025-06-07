@@ -2,7 +2,6 @@
 #include "kernel.h"
 #include "std_lib.h"
 
-// ... (variabel global dan deklarasi fungsi helper tetap sama) ...
 char username[64];
 char prompt_suffix[16];
 char prompt[128];
@@ -15,10 +14,8 @@ void shell() {
     char cmd[16];
     char arg[2][64];
 
-    // >>> PERUBAHAN 1: Seed generator acak HANYA SEKALI saat shell dimulai <<<
     srand(getBiosTick());
 
-    // Inisialisasi awal
     strcpy(username, "user");
     strcpy(prompt_suffix, "> ");
     updatePrompt();
@@ -33,8 +30,6 @@ void shell() {
     }
 }
 
-// ... (updatePrompt, parseCommand, grandCompany tetap sama) ...
-// ... (Salin fungsi-fungsi ini dari jawaban sebelumnya) ...
 void updatePrompt() {
     clear(prompt, 128);
     strcpy(prompt, username);
@@ -88,25 +83,23 @@ void grandCompany(char* company) {
 void handleCommand(char *cmd, char arg[2][64], char *buf) {
     char out_buf[128];
     int num1, num2, result;
-    unsigned int random_val; // ganti nama variabel agar tidak bentrok
+    unsigned int random_val; 
 
     if (strcmp(cmd, "yo")) {
         printString("gurt\r\n");
     } else if (strcmp(cmd, "gurt")) {
         printString("yo\r\n");
     } else if (strcmp(cmd, "yogurt")) {
-        // >>> PERUBAHAN 2: Gunakan rand() BUKAN getBiosTick() <<<
         random_val = mod(rand(), 3); 
 
         if (random_val == 0) {
             printString("gurt> yo\r\n");
         } else if (random_val == 1) {
             printString("gurt> ts unami gng </3\r\n");
-        } else { // random_val == 2
+        } else { 
             printString("gurt> sygau\r\n");
         }
     } else if (strcmp(cmd, "user")) {
-        // ... (sisa fungsi ini sama persis seperti sebelumnya) ...
         if (strlen(arg[0]) > 0) {
             strcpy(username, arg[0]);
             printString("Username changed to ");

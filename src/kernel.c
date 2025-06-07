@@ -1,8 +1,7 @@
 #include "shell.h"
 #include "kernel.h"
 
-// DEKLARASI YANG HILANG: Tambahkan baris ini
-byte video_attribute = 0x07; // Atribut video default: Light Grey on Black
+byte video_attribute = 0x07;
 
 void main() {
     clearScreen();
@@ -13,7 +12,6 @@ void printString(char* str) {
     int i = 0;
     while (str[i] != '\0') {
         int ax = 0x0E00 | str[i];
-        // Sekarang variabel video_attribute sudah dideklarasikan
         int bx = 0x0000 | video_attribute;
         interrupt(0x10, ax, bx, 0, 0);
         i++;
@@ -51,7 +49,6 @@ void clearScreen() {
     int i;
     for (i = 0; i < 80 * 25; i++) {
         putInMemory(0xB800, i * 2, ' ');
-        // Sekarang variabel video_attribute sudah dideklarasikan
         putInMemory(0xB800, i * 2 + 1, video_attribute);
     }
     interrupt(0x10, 0x0200, 0, 0, 0);

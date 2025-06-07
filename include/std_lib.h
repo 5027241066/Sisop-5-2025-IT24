@@ -3,7 +3,6 @@
 
 #include "std_type.h"
 
-// Fungsi yang sudah ada
 int div(int a, int b);
 int mod(int a, int b);
 
@@ -14,7 +13,6 @@ void clear(byte *buf, unsigned int size);
 void atoi(char *str, int *num);
 void itoa(int num, char *str);
 
-// Fungsi PRNG baru
 void srand(unsigned int seed);
 unsigned int rand();
 

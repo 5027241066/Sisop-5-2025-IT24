@@ -1,26 +1,16 @@
 #include "std_lib.h"
 
-// Variabel global untuk menyimpan state PRNG
 static unsigned int rand_seed;
 
-// ==========================================================
-// === FUNGSI rand DENGAN IMPLEMENTASI BARU (16-BIT SAFE) ===
-// ==========================================================
 void srand(unsigned int seed) {
     rand_seed = seed;
 }
 
 unsigned int rand() {
-    // Konstanta ini aman untuk aritmetika 16-bit.
-    // bcc tidak akan menghasilkan panggilan ke helper library.
     rand_seed = rand_seed * 25173 + 13849;
-    // Overflow pada unsigned int akan secara otomatis menangani "mod 65536"
     return rand_seed;
 }
-// ==========================================================
 
-
-// --- SISA FUNGSI LAINNYA TETAP SAMA SEPERTI SEBELUMNYA ---
 int div(int a, int b) {
     int result = 0;
     bool negative = false;

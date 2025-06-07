@@ -12,6 +12,6 @@ extern unsigned int getBiosTick();
 void printString(char* str);
 void readString(char* buf);
 void clearScreen();
-void setTextColor(byte color); // Fungsi baru untuk mengganti warna
+void setTextColor(byte color); 
 
 #endif // __KERNEL_H__
