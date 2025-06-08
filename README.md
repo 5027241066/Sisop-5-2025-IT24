@@ -324,4 +324,68 @@ gurt@Storm> clear
 
 ### 5. 
 
+### 6. Random
+Pada soal ini ketika type "yogurt" maka akan muncul pesan random berikut "yo", "ts unami gng </3", "sygau". 
+
+Untuk menjalankan soal berikut, terdapat pada function `handleCommand`
+
+```
+void handleCommand(char *cmd, char arg[2][64], char *buf) {
+    // ......
+    else if (strcmp(cmd, "yogurt")) {
+        random_val = mod(rand(), 3); 
+
+        if (random_val == 0) {
+            printString("gurt> yo\r\n");
+        } else if (random_val == 1) {
+            printString("gurt> ts unami gng </3\r\n");
+        } else { 
+            printString("gurt> sygau\r\n");
+        }
+    }
+    // ......
+}
+```
+
+Selain itu, terdapat support juga dari file std_lib.c
+```
+static unsigned int rand_seed;
+
+void srand(unsigned int seed) {
+    rand_seed = seed;
+}
+
+unsigned int rand() {
+    rand_seed = rand_seed * 25173 + 13849;
+    return rand_seed;
+}
+
+int mod(int a, int b) {
+    if (b == 0) return -1;
+    if (b < 0) b = -b;
+    while (a >= b) {
+        a = a - b;
+    }
+    return a;
+}
+```
+
+Kemudian untuk pemilihan random terdapat pada file shell:
+```
+void shell() {
+    // ......
+    srand(getBiosTick());  // Initialize random seed using BIOS tick count
+    // ......
+}
+```
+
+Untuk pemilihan random nilai awal diatur dengan `getBiosTick()`, yang mengambil jumlah tick BIOS yang memastikan urutan angka berbeda tiap kali OS dijalankan.
+
+Ketika user menulis yogurt, perintah dikenali oleh `strcmp(cmd, "yogurt")`. Fungsi `rand()` digunakan untuk menghasilkan angka acak. `mod(rand(), 3)` membatasi hasil menjadi angka antara 0 hingga 2. Berdasarkan angka tersebut, salah satu dari tiga respons berikut dipilih:
+Berdasarkan angka tersebut, salah satu dari tiga respons berikut dipilih:
+- 0: "gurt> yo"
+- 1: "gurt> ts unami gng </3"
+- 2: "gurt> sygau"
+
+Dengan mekanisme ini, setiap kali perintah yogurt dipanggil, pengguna akan mendapatkan salah satu dari tiga respons yang berbeda secara acak. 
 > Isi sesuai pengerjaan.
