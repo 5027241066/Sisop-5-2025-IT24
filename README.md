@@ -238,4 +238,90 @@ Implementasi ini menggunakan beberapa fungsi yaitu
 - `clear` untuk mengosongkan buffer
 - `printString` untuk mencetak output
 
+### 4. Coloring
+Dalam file `shell.c` terdapat function `grandCompany` seperti berikut
+
+```
+void grandCompany(char* company) {
+    if (strcmp(company, "maelstrom")) {
+        current_color = 0x04; strcpy(prompt_suffix, "@Storm> ");
+    } else if (strcmp(company, "twinadder")) {
+        current_color = 0x0E; strcpy(prompt_suffix, "@Serpent> ");
+    } else if (strcmp(company, "immortalflames")) {
+        current_color = 0x01; strcpy(prompt_suffix, "@Flame> ");
+    } else {
+        printString("Invalid Grand Company. Use maelstrom, twinadder, or immortalflames.\r\n");
+        return;
+    }
+    setTextColor(current_color);
+    clearScreen();
+    updatePrompt();
+}
+```
+
+dan terdapat function `handleCommand`
+
+```
+void handleCommand(char *cmd, char arg[2][64], char *buf) {
+    } else if (strcmp(cmd, "grandcompany")) {
+        if(strlen(arg[0]) > 0) {
+            grandCompany(arg[0]);
+        } else {
+            printString("Please specify a Grand Company.\r\n");
+        }
+    } else if (strcmp(cmd, "clear")) {
+        current_color = 0x07;  // Reset to default white color
+        setTextColor(current_color);
+        clearScreen();
+        strcpy(prompt_suffix, "> ");  // Reset prompt suffix
+        printString("The Grand Companies are saddened by your neutrality.\r\n");
+        updatePrompt();
+    }
+}
+```
+
+Kemudian untuk coloring terdapat function berikut
+```
+byte video_attribute = 0x07;  // Default white color
+
+void setTextColor(byte color) {
+    video_attribute = color;
+}
+
+void clearScreen() {
+    int i;
+    for (i = 0; i < 80 * 25; i++) {
+        putInMemory(0xB800, i * 2, ' ');
+        putInMemory(0xB800, i * 2 + 1, video_attribute);
+    }
+    interrupt(0x10, 0x0200, 0, 0, 0);
+}
+```
+
+Berikut ini adalah list untuk Color Code:
+- 0x04 = Red (Maelstrom)
+- 0x0E = Yellow (Twin Adder)
+- 0x01 = Blue (Immortal Flames)
+- 0x07 = White (Default/Neutral)
+
+Kemudian ketika user memasukkan perintah grandcompany maka perintah tersebut akan diurai dan dikirim ke function grandCompany. Berdasarkan nama company yang dimasukkan, warna yang sesuai diatur melalui variabel current_color. Prompt suffix diatur sesuai (misalnya: @Storm>). Layar dibersihkan (clear) dan warna teks diperbarui. Prompt diperbarui untuk menampilkan afiliasi baru.
+
+Ketika user memasukkan `clear` maka warna diatur ulang menjadi putih (0x07),layar dibersihkan, prompt suffix diatur ulang ke default (>), pesan "saddened" ditampilkan, prompt diperbarui untuk menghapus afiliasi grandcompany. 
+
+Implementasi ini menggunakan beberapa komponen penting:
+- `video_attribute` untuk menyimpan warna teks saat ini.
+- `prompt_suffix` untuk menyimpan afiliasi company dalam prompt.
+- `setTextColor` dan `clearScreen` untuk perubahan tampilan visual.
+- `updatePrompt` untuk menjaga tampilan prompt tetap konsisten.
+
+Outputnya akan seperti
+```
+gurt> grandcompany maelstrom
+-- terminal menjadi warna merah --
+gurt@Storm> clear
+-- terminal menjadi warna putih --
+```
+
+### 5. 
+
 > Isi sesuai pengerjaan.
