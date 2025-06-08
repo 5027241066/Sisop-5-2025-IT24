@@ -179,5 +179,63 @@ https://github.com/user-attachments/assets/1cfa66b1-b2f5-4e3e-a4b2-ec8b012f6fbb
 
 
 ## Laporan
+### 1. The Echo
+
+
+### 2. Yo Gurt
+Pada soal ini jika user memasukkan input "yo" maka akan keluar "gurt" dan kebalikannya
+Untuk mengerjakan soal tersebut code yang digunakan terdapat pada `shell.c`
+
+```
+void handleCommand(char *cmd, char arg[2][64], char *buf) {
+    char out_buf[128];
+    int num1, num2, result;
+    unsigned int random_val; 
+
+    if (strcmp(cmd, "yo")) {
+        printString("gurt\r\n");
+    } else if (strcmp(cmd, "gurt")) {
+        printString("yo\r\n");
+    }
+```
+
+Dimana memiliki fungsi ketika user memasukkan input "yo" maka system akan print "gurt". Kemudian jika user memasukkan input "gurt" maka system akan print "gurt". Input diproses oleh fungsi `parseCommand` yang mengekstrak kata pertama sebagai perintah. Fungsi `strcmp` dari `std_lib.c` membandingkan string. Fungsi `printString` dari `kernel.c` menangani outputnya. Untuk output dari input "yo" dan "gurt" sudah pasti akan sama.
+
+### 3. Update User
+
+Untuk mengganti nama user hal yang pertama dilakukan adalah menginisialisasi dalam fungsi shell:
+
+```
+void shell() {
+
+    strcpy(username, "user");  // Mengatur username default
+    strcpy(prompt_suffix, "> ");  // Mengatur akhiran prompt default
+    updatePrompt();  // Membuat prompt awal
+}
+
+```
+
+Ketika pengguna memasukkan perintah user:
+Jika terdapat argumen `(strlen(arg[0]) > 0)` maka username baru disalin ke variabel username, kemudian akan di print `Username changed to xxx` sebagai pesan konfirmasi. Username akan diperbarui dengan username yang baru
+
+Jika tidak ada argumen. Secara default, username tetap dipertahankan (meskipun dalam contoh, harusnya kembali menjadi "user")
+
+Fungsi `updatePrompt()` memastikan bahwa shell selalu menampilkan username saat ini dengan cara mengosongkan buffer, menyalin username saat ini, menambahkan akhiran (> )
+
+Ilustrasi:
+```
+user> user Tia
+Username changed to Tia
+Tia> user
+Username changed to user
+user>
+```
+
+Implementasi ini menggunakan beberapa fungsi yaitu
+
+- `strcpy` untuk menyalin string
+- `strlen` untuk mendapatkan panjang string
+- `clear` untuk mengosongkan buffer
+- `printString` untuk mencetak output
 
 > Isi sesuai pengerjaan.
