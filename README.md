@@ -187,6 +187,7 @@ Command yang tidak dikenal akan di-*echo* kembali ke terminal. Implementasinya c
 printString(buf);
 printString("\n");
 ```
+Jika input tidak cocok dengan command yang valid, maka isi buf (input user) akan dicetak kembali ke layar. Ini di-handle dalam shell.c pada bagian akhir fungsi handleCommand().
 
 ### 2. Yo Gurt
 Pada soal ini jika user memasukkan input "yo" maka akan keluar "gurt" dan kebalikannya
@@ -345,24 +346,17 @@ Implementasi di handleCommand:
 ```
 num1 = atoi(arg[0]);
 num2 = atoi(arg[1]);
-
-if (strcmp(cmd, "add")) {
-    result = num1 + num2;
-} else if (strcmp(cmd, "sub")) {
-    result = num1 - num2;
-} else if (strcmp(cmd, "mul")) {
-    result = num1 * num2;
-} else if (strcmp(cmd, "div")) {
-    if (num2 == 0) {
-        printString("Division by zero error\r\n");
-    } else {
-        result = num1 / num2;
-    }
+if (strcmp(cmd, "add")) result = num1 + num2;
+else if (strcmp(cmd, "sub")) result = num1 - num2;
+else if (strcmp(cmd, "mul")) result = num1 * num2;
+else if (strcmp(cmd, "div")) {
+    if (num2 == 0) printString("Division by zero error\r\n");
+    else result = num1 / num2;
 }
-itoa(result, out_buf);
-printString(out_buf); printString("\r\n");
+itoa(result, out_buf); printString(out_buf);
 
 ```
+Fungsi atoi dan itoa dari std_lib.c digunakan untuk konversi antara string dan angka.
 
 ### 6. Random
 Pada soal ini ketika type "yogurt" maka akan muncul pesan random berikut "yo", "ts unami gng </3", "sygau". 
@@ -429,3 +423,45 @@ Berdasarkan angka tersebut, salah satu dari tiga respons berikut dipilih:
 
 Dengan mekanisme ini, setiap kali perintah yogurt dipanggil, pengguna akan mendapatkan salah satu dari tiga respons yang berbeda secara acak. 
 > Isi sesuai pengerjaan.
+
+### 7. Makefile - Build System OS
+
+Makefile menyusun OS menjadi image floppy.img yang bisa dijalankan di Bochs atau QEMU.
+
+Penjelasan Target:
+```
+prepare:
+	dd if=/dev/zero of=bin/floppy.img bs=512 count=2880
+```
+- Membuat image kosong
+```
+bootloader:
+	nasm bootloader.asm -o bin/bootloader.bin
+```
+- Kompilasi bootloader
+```
+stdlib:
+	gcc -m32 -ffreestanding -c src/std_lib.c -o bin/std_lib.o
+```
+- Kompilasi library string buatan sendiri
+```
+shell:
+	gcc -m32 -ffreestanding -c src/shell.c -o bin/shell.o
+```
+- Kompilasi file utama shell
+```
+kernel:
+	gcc -m32 -ffreestanding -c src/kernel.c -o bin/kernel.o
+	nasm -f elf src/kernel.asm -o bin/kernel_asm.o
+```
+- Kompilasi kernel bagian C dan ASM
+```
+link:
+	ld -m elf_i386 -T linker.ld -o bin/kernel.bin bin/kernel.o bin/kernel_asm.o bin/shell.o bin/std_lib.o
+	cat bin/bootloader.bin bin/kernel.bin > bin/floppy.img
+```
+- Menautkan semua object file menjadi satu kernel image, lalu disatukan dengan bootloader
+```
+build: prepare bootloader stdlib shell kernel link
+```
+File floppy.img dihasilkan di folder bin/, dan siap diuji dengan emulator.
