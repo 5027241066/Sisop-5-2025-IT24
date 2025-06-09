@@ -181,6 +181,12 @@ https://github.com/user-attachments/assets/1cfa66b1-b2f5-4e3e-a4b2-ec8b012f6fbb
 ## Laporan
 ### 1. The Echo
 
+Command yang tidak dikenal akan di-*echo* kembali ke terminal. Implementasinya cukup dengan:
+
+```c
+printString(buf);
+printString("\n");
+```
 
 ### 2. Yo Gurt
 Pada soal ini jika user memasukkan input "yo" maka akan keluar "gurt" dan kebalikannya
@@ -322,7 +328,41 @@ gurt@Storm> clear
 -- terminal menjadi warna putih --
 ```
 
-### 5. 
+### 5. Kalkulator
+Command:
+
+```
+add <x> <y> → penjumlahan
+
+sub <x> <y> → pengurangan
+
+mul <x> <y> → perkalian
+
+div <x> <y> → pembagian
+
+```
+Implementasi di handleCommand:
+```
+num1 = atoi(arg[0]);
+num2 = atoi(arg[1]);
+
+if (strcmp(cmd, "add")) {
+    result = num1 + num2;
+} else if (strcmp(cmd, "sub")) {
+    result = num1 - num2;
+} else if (strcmp(cmd, "mul")) {
+    result = num1 * num2;
+} else if (strcmp(cmd, "div")) {
+    if (num2 == 0) {
+        printString("Division by zero error\r\n");
+    } else {
+        result = num1 / num2;
+    }
+}
+itoa(result, out_buf);
+printString(out_buf); printString("\r\n");
+
+```
 
 ### 6. Random
 Pada soal ini ketika type "yogurt" maka akan muncul pesan random berikut "yo", "ts unami gng </3", "sygau". 
