@@ -1,4 +1,4 @@
-# Sisop-5-2025-IT-Template
+# Sisop-5-2025-IT
 
 ## Kelompok
 
